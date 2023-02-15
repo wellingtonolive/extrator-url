@@ -1,5 +1,6 @@
 import re
 
+
 class ExtratorURL:
     def __init__(self, url):
         self.url = self.sanitiza_url(url)
@@ -44,7 +45,40 @@ class ExtratorURL:
 
         return valor
 
+    def __len__(self):
+        return len(self.url)
 
-extrator_url = ExtratorURL("https://bytebank.com/cambio?moedaDestino=dolar&moedaOrigem=real&quantidade=1000")
+    def __str__(self):
+        return self.url + "\n" + "Parâmetros: " + self.get_url_parametros() + "\n" + "URL Base: " + self.get_url_base()
+
+    def __eq__(self, other):
+        return self.url == other.url
+
+
+extrator_url = ExtratorURL("https://bytebank.com/cambio?moedaDestino=real&moedaOrigem=dolar&quantidade=6500")
+print("O tamanho da URL: ", len(extrator_url))
 valor_quantidade = extrator_url.get_valor_parametro("quantidade");
-print(valor_quantidade);
+print(extrator_url);
+
+cotacao_dolar = 5.50
+moeda_origem = extrator_url.get_valor_parametro("moedaOrigem")
+moeda_destino = extrator_url.get_valor_parametro("moedaDestino")
+quantidade = float(extrator_url.get_valor_parametro("quantidade"))
+
+if moeda_origem is 'dolar':
+    res = quantidade * cotacao_dolar
+    cifra_origem = "$"
+    cifra_destino = "R$"
+else:
+    res = quantidade / cotacao_dolar
+    cifra_origem = "R$"
+    cifra_destino = "$"
+
+print("============== Dados da Conversão ==============")
+print("Moeda Origem: " + moeda_origem)
+print("Moeda Destino: " + moeda_destino)
+print('Valor na Moeda de Origem: ' + cifra_origem + f'{round(quantidade,2)}')
+print('Valor na Moeda de Destino: ' + cifra_destino + f'{round(res, 2)}')
+print("============== Fim da Conversão ================")
+
+
